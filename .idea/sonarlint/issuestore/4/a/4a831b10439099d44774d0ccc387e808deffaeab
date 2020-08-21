@@ -1,0 +1,21 @@
+
+U	java:S106”"9Replace this use of System.out or System.err by a logger.(»ßğI8ªèÏÓ¼.
+A
+java:S1640u"Convert this Map to an EnumMap.(’ú¢Şûÿÿÿÿ8Ø†ÕÓ¼.
+V	java:S106“"9Replace this use of System.out or System.err by a logger.(Âì“ÿ8êºÍÓ¼.
+o
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(¦¾ß­8¨·àÒ¼.
+t
+java:S37766"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(ê©èÔıÿÿÿÿ8ı ªÓ¼.
+[	java:S106‘"9Replace this use of System.out or System.err by a logger.(à›ôôşÿÿÿÿ8¡ÌÓ¼.
+U	java:S106•"9Replace this use of System.out or System.err by a logger.(½½÷38ªèÏÓ¼.
+o
+java:S3776h"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Çµí‘8«ºÓ¼.
+[	java:S106’"9Replace this use of System.out or System.err by a logger.(œù·øÿÿÿÿ8¡ÌÓ¼.
+A
+java:S1640j"Convert this Map to an EnumMap.(­¯ÁÉÿÿÿÿÿ8Ø†ÕÓ¼.
+A
+java:S1640i"Convert this Map to an EnumMap.(í½¡×ùÿÿÿÿ8Ø†ÕÓ¼.
+<
+java:S1640x"Convert this Map to an EnumMap.(ôã„”8Ø†ÕÓ¼.
+Y	java:S125Œ"<This block of commented-out lines of code should be removed.(ùİ8¹ì‘Ô¼.
