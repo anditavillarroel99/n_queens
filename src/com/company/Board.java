@@ -1,8 +1,8 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Board {
@@ -54,6 +54,9 @@ public class Board {
         System.out.println( "+---".repeat(N) + "+" );
 
     }
+
+
+
     private Board placeQueenOnTheBoard(int xQueen, int yQueen){
 
         if (this.board[xQueen][yQueen] != EMPTY ) {
@@ -65,7 +68,7 @@ public class Board {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
 
-                if (i == xQueen && j == yQueen) {
+                if (i == xQueen && j == yQueen ) {
                     nextStep.board[i][j] = QUEEN;
                 } else{
                     nextStep.board[i][j] = this.board[i][j];
@@ -127,32 +130,48 @@ public class Board {
                 }
             }
         }
+
         return false;
     }
 
     public List<Board> succesors(){
-
-        if ( possibleCapture() ) {
-            return Collections.emptyList();
-        }
-
-        if ( depth >= N ) {
+        if ( possibleCapture() && depth >= N) {
             return Collections.emptyList();
         }
 
         List<Board> children = new ArrayList<>();
-        //genera todos los posibles estados hijos para crear el arbol
 
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) { //recorre todos los espacios del tablero, y si esta vacia
+            for (int j = 0; j < N; j++) {
 
-                if(this.board[i][j] == EMPTY){//considerar solo los espacios donde la reina no esta atacando... etc... implementar
-                    children.add( placeQueenOnTheBoard(i, j) );
-                }
+                    if (this.board[i][j] == EMPTY && !possibleCapture()) {
+                           children.add(placeQueenOnTheBoard(i, j));
+                    }
+
 
             }
         }
         return children;
+    }
+
+    public Board searchForGoalState() {
+        List<Board> q = new LinkedList<>();
+
+        q.add(this); // Agregar Nodo actual
+
+        do{
+            Board nextChildToCheck = q.remove(0);
+//            System.out.println(" Nuevo Estado : ");
+//            nextChildToCheck.printBoard();
+
+            if(nextChildToCheck.isGoalState()){
+                return nextChildToCheck;
+            }
+
+            q.addAll(0,nextChildToCheck.succesors());
+        }while( !q.isEmpty() );
+
+        return null;
     }
 
 }
