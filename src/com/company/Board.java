@@ -26,12 +26,12 @@ public class Board {
     }
 
 
-    public static Board startBoard() { //Estado inicial
+    public static Board startBoard() {
 
-        Board boardState = new Board();
+        Board boardState = new Board(); //Estado inicial
 
-        for (int i=0; i<boardState.board.length; i++) {
-            for (int j=0; j<boardState.board.length; j++) {
+        for (int i = 0; i < boardState.board.length; i++) {
+            for (int j = 0; j< boardState.board.length; j++) {
                 boardState.board[i][j] = EMPTY;
             }
         }
@@ -54,75 +54,74 @@ public class Board {
         System.out.println( "+---".repeat(N) + "+" );
 
     }
-    private Board placeQueenOnTheBoard(int iQueen, int jQueen){
+    private Board placeQueenOnTheBoard(int xQueen, int yQueen){
 
-        if (this.board[iQueen][jQueen] != EMPTY ){
-            throw new IllegalArgumentException(" La casilla ya esta ocupada.. ");
+        if (this.board[xQueen][yQueen] != EMPTY ) {
+            throw new IllegalArgumentException(" La casilla ya esta ocupada! ");
         }
 
-        Board nextStep = new Board(); //tablero hijo, donde replico mi estado actual, (lo que tengo en mi estado)
+        Board nextStep = new Board(); // tablero "hijo"
 
-        for (int i=0; i<N; i++) {
-            for (int j=0; j<N; j++) {
-                if (i == iQueen && j == jQueen) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+
+                if (i == xQueen && j == yQueen) {
                     nextStep.board[i][j] = QUEEN;
                 } else{
                     nextStep.board[i][j] = this.board[i][j];
                 }
+
             }
         }
-        //Como estamos creando a los hijos posibles, se pone quien es el padre
+
         nextStep.parent = this;
-        //el hijo tiene una profundidad +1
         nextStep.depth = this.depth + 1;
 
         return nextStep;
     }
 
     public boolean isGoalState(){
-        //MEJORAS /--> considerar los especios donde la reina no esta atajando
-        //1. hay 8 reinas y 2. ninguna se intersecta con otras
+        //1. hay N reinas
+
         int numberOfQueens = 0;
-        for (int i=0; i<N; i++) {
-            for (int j=0; j<N; j++) {
-                if(this.board[i][j] == QUEEN){
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+
+                if (this.board[i][j] == QUEEN) {
                     numberOfQueens++;
                 }
+
             }
         }
 
         if (numberOfQueens != N) {
             return false;
         }
-        return !verifyPossibleCapture();
+
+        return  !possibleCapture() ;  //2. ninguna se intersecta con otra
+
     }
 
-    private boolean verifyPossibleCapture() {
-        //Verificar intersecciones:
+    private boolean possibleCapture() {
+        //Intersecciones:
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if(this.board[i][j] == QUEEN){
-                    for (int iOtra = 0; iOtra < N; iOtra++) {
-                        for (int jOtra = 0; jOtra < N; jOtra++) {
-                            if( i == iOtra && j == jOtra ){
-                                continue; // esta revisando la misma reina del ciclo anterior
-                            }
-                            if (this.board[iOtra][jOtra] == EMPTY){
-                                continue; //Revisando un espacio vacio con la reina, lo ignoro
-                            }
-                            //Si llegue aqui, entonces estoy viendo a otra reina en el tablero que la encontrada en el primer par del ciclo for
-                            if (i == iOtra || j == jOtra) {
-                                return true;
-                            }
-                            //Caso Diagonal:
-                            if ( iOtra - i == jOtra - j ) {
-                                return true;
+
+                if ( this.board[i][j] == QUEEN ) {
+
+                    for (int x = 0; x < N; x++) {
+                        for (int y = 0; y < N; y++) {
+
+                            //[x][y] nueva reina
+                            if ( (i != x || j != y) && (this.board[x][y] == QUEEN) ) { // Si la posicion [x][y] no es la misma a la reina anterior y no es vacio
+
+                                if ( (i == x || j == y ) || ( (x - i == y - j) || (i + j == x + y) ))
+                                    return true;
+
                             }
 
-                            if (i+j == iOtra +jOtra){
-                                return true;
-                            }
                         }
                     }
                 }
@@ -133,20 +132,22 @@ public class Board {
 
     public List<Board> succesors(){
 
-        if(verifyPossibleCapture()){
+        if ( possibleCapture() ) {
             return Collections.emptyList();
         }
-        if(depth >= N){
+
+        if ( depth >= N ) {
             return Collections.emptyList();
         }
+
         List<Board> children = new ArrayList<>();
         //genera todos los posibles estados hijos para crear el arbol
 
-        for (int i=0; i<N; i++) {
-            for (int j=0; j<N; j++) { //recorre todos los espacios del tablero, y si esta vacia
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) { //recorre todos los espacios del tablero, y si esta vacia
+
                 if(this.board[i][j] == EMPTY){//considerar solo los espacios donde la reina no esta atacando... etc... implementar
-                    children.add(placeQueenOnTheBoard(i, j));
-                    //recorre todos los esspacios del tablero y si encuentra un espacio vacio entonces lo agrega a la lista de hijos
+                    children.add( placeQueenOnTheBoard(i, j) );
                 }
 
             }

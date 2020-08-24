@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ public class Main {
         if( numQueens < 4){
             System.out.println(" -> El numero minimo de Reinas es de 4 : ");
             Board.setN(4);
+
         } else {
             Board.setN(numQueens);
         }
@@ -29,26 +31,29 @@ public class Main {
         q.add(initialState);
 
         int c =0;
+
         do{
-            Board n = q.removeFirst(); //El primer elemento de q
-            //q se queda como la lista menos la primera
-            if(c >= 1000) {
+
+            Board n = q.removeFirst();
+
+            if ( c >= 100000000 ) {
                 System.out.println(" Nuevo estado: ");
                 n.printBoard();
                 c = 0;
             }
-            if ( n.isGoalState()) {
+
+            if ( n.isGoalState() ) {
                 System.out.println(" SOLUCION HALLADA !");
                 n.printBoard();
                 System.exit(0);
             }
 
-            LinkedList<Board> s = new LinkedList<>(n.succesors());
-            q.addAll(0,s);//agrega en la posicion 0 a todos los elementos de s
+            LinkedList<Board> s = new LinkedList<>( n.succesors() );
+            q.addAll(0,s);
 
             c++;
 
-        }while(!q.isEmpty());
+        } while( !q.isEmpty() );
 
     }
 }
